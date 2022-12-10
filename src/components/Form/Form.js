@@ -7,7 +7,11 @@ import { Button, FormContact, Input, Label } from './Form.styled';
 const idInputName = nanoid();
 const idInputNamber = nanoid();
 
-export const ContactForm = ({ handleSubmit }) => {
+export const ContactForm = ({ addNewCotact }) => {
+  const handleSubmit = (values, { resetForm }) => {
+    addNewCotact({ ...values });
+    resetForm();
+  };
   return (
     <Formik initialValues={{ name: '', number: '' }} onSubmit={handleSubmit}>
       <FormContact>
