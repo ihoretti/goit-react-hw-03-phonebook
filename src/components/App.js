@@ -21,36 +21,33 @@ export class App extends Component {
     filter: '',
   };
 
-  handleSubmit = (values, { resetForm }) => {
-    this.addNewCotact(values, resetForm);
-  };
-
-  addNewCotact = (values, resetForm) => {
+  addNewCotact = values => {
     const { name, number } = values;
     const { contacts } = this.state;
 
     // const checkContact = contacts.some(item => item.name === name);
-    const checkContact = contacts.find(item => item.name === name);
+    const isInContacts = contacts.some(
+      item => item.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (isInContacts) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
 
     const newContact = {
       id: nanoid(),
       name,
       number,
     };
-
-    if (checkContact !== undefined) {
-      alert(`${name} is already in contacts.`);
-    } else {
-      this.setState(pS => ({
-        contacts: [newContact, ...pS.contacts],
-      }));
-      resetForm();
-    }
+    this.setState(({ contacts }) => ({
+      contacts: [newContact, ...contacts],
+    }));
   };
 
   deleteContact = contactId => {
-    this.setState(pS => ({
-      contacts: pS.contacts.filter(({ id }) => id !== contactId),
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(({ id }) => id !== contactId),
     }));
   };
 
@@ -68,7 +65,7 @@ export class App extends Component {
   };
 
   render() {
-    const { contacts } = this.state;
+    const { contacts, filter } = this.state;
     const visibleContact = this.getVisibleContact();
 
     return (
@@ -88,16 +85,21 @@ export class App extends Component {
           />
 
           <SecondaryTitle>Contact</SecondaryTitle>
-          <Filter
-            title="Find contacs by name"
-            state={this.state}
-            handleFindContact={this.handleFindContact}
-          />
-          <Contact
-            visibleContact={visibleContact}
-            deleteContact={this.deleteContact}
-            contacts={contacts}
-          />
+          {!!contacts.length && (
+            <Filter
+              title="Find contacs by name"
+              state={filter}
+              handleFindContact={this.handleFindContact}
+            />
+          )}
+          {!!contacts.length && (
+            <Contact
+              visibleContact={visibleContact}
+              deleteContact={this.deleteContact}
+              contacts={contacts}
+            />
+          )}
+
           {contacts.length === 0 && (
             <Notification>You have no contacts</Notification>
           )}
