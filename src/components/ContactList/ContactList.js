@@ -9,7 +9,7 @@ import {
 export const Contact = ({ visibleContact, deleteContact, contacts }) => {
   return (
     <ContactList>
-      {visibleContact.length === 0 ? (
+      {visibleContact.lenght === 0 ? (
         <Notification>contact not found</Notification>
       ) : (
         visibleContact.map(({ id, name, number }) => (
@@ -20,7 +20,7 @@ export const Contact = ({ visibleContact, deleteContact, contacts }) => {
             </DeleteBtn>
           </ItemsContact>
         ))
-      )}
+      )}{' '}
     </ContactList>
   );
 };
