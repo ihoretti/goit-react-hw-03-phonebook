@@ -37,7 +37,7 @@ export class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     //console.log(`componentDidUpdate`);
     if (this.state.contacts !== prevState.contacts) {
-      console.log(`Обновилось поле contacts`);
+      //console.log(`Обновилось поле contacts`);
       //console.log(`this.state`);
       localStorage.setItem(CONTACTS_KEY, JSON.stringify(this.state.contacts));
     }
