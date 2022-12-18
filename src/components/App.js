@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { ThemeProvider } from 'styled-components';
+//import { ToastContainer, toast } from 'react-toastify';
 
 import { theme } from '../theme/theme';
 import { Contact } from './ContactList/ContactList';
@@ -9,6 +10,10 @@ import { ContactForm } from './Form/Form';
 import { Filter } from './Filter/Filter';
 import { PrimaryTitle, SecondaryTitle } from './Titles/Titles';
 import { Notification } from './ContactList/ContactList.styled';
+
+//import 'react-toastify/dist/ReactToastify.css';
+
+const CONTACTS_KEY = 'contacts';
 
 export class App extends Component {
   state = {
@@ -20,7 +25,23 @@ export class App extends Component {
     ],
     filter: '',
   };
-
+  componentDidMount() {
+    //console.log(`componentDidMount`);
+    const contactsRaw = localStorage.getItem(CONTACTS_KEY);
+    const parsedContacts = JSON.parse(contactsRaw);
+    //console.log(contacts);
+    if (parsedContacts) {
+      this.setState({ cotnacts: parsedContacts });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    //console.log(`componentDidUpdate`);
+    if (this.state.contacts !== prevState.contacts) {
+      console.log(`Обновилось поле contacts`);
+      //console.log(`this.state`);
+      localStorage.setItem(CONTACTS_KEY, JSON.stringify(this.state.contacts));
+    }
+  }
   addNewCotact = values => {
     const { name, number } = values;
     const { contacts } = this.state;
