@@ -26,19 +26,14 @@ export class App extends Component {
     filter: '',
   };
   componentDidMount() {
-    //console.log(`componentDidMount`);
     const contactsRaw = localStorage.getItem(CONTACTS_KEY);
     const parsedContacts = JSON.parse(contactsRaw);
-    //console.log(contacts);
     if (parsedContacts) {
-      this.setState({ cotnacts: parsedContacts });
+      this.setState({ contacts: parsedContacts });
     }
   }
   componentDidUpdate(prevProps, prevState) {
-    //console.log(`componentDidUpdate`);
     if (this.state.contacts !== prevState.contacts) {
-      //console.log(`Обновилось поле contacts`);
-      //console.log(`this.state`);
       localStorage.setItem(CONTACTS_KEY, JSON.stringify(this.state.contacts));
     }
   }
